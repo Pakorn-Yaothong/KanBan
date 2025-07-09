@@ -23,7 +23,7 @@ def create_user(db: Session, user_in: UserCreate) -> User:
     if existing:
         raise Exception("User already exists")
 
-    user = User(
+    user = User(           
         username=user_in.username,
         email=user_in.email,
         first_name=user_in.first_name,

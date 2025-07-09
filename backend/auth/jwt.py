@@ -4,8 +4,8 @@ import os
 from datetime import datetime, timedelta
 from jose import jwt
 
-# คีย์ลับสำหรับเซ็นโทเคน ถ้าใช้จริงควรตั้งผ่าน ENV VAR
-SECRET_KEY = os.getenv("JWT_SECRET_KEY", "your-secret-key")
+# ✅ ใช้ชื่อ ENV เดียวกับ .env และ dependencies.py
+SECRET_KEY = os.getenv("SECRET_KEY", "your-secret-key")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
 

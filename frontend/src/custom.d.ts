@@ -1,5 +1,3 @@
-// src/custom.d.ts
-
 declare module "react-beautiful-dnd" {
   import React from "react";
 
@@ -23,7 +21,6 @@ declare module "react-beautiful-dnd" {
     dragHandleProps: Record<string, any>;
   }
 
-  // เปลี่ยนจาก ComponentType ให้เป็น FC ที่มี children ด้วย
   export const DragDropContext: React.FC<{
     onDragEnd: (result: DropResult) => void;
     children?: React.ReactNode;
@@ -41,7 +38,7 @@ declare module "react-beautiful-dnd" {
   }>;
 }
 
-// react-dom/client ก็เหมือนเดิม
+// แยก declare react-dom/client แยกไฟล์ได้
 declare module "react-dom/client" {
   import { ReactElement } from "react";
   export function createRoot(container: Element | DocumentFragment): {

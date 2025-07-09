@@ -25,4 +25,8 @@ def login(data: LoginData, db: Session = Depends(get_db)):
     if not user:
         raise HTTPException(status_code=401, detail="Invalid credentials")
     access_token = create_access_token({"sub": str(user.id)}, expires_delta=timedelta(hours=1))
-    return {"access_token": access_token, "token_type": "bearer"}
+    return {
+    "access_token": access_token,
+    "token_type": "bearer",
+    "user_id": user.id  # ✅ เพิ่ม user_id ใน response
+}

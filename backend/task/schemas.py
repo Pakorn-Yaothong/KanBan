@@ -24,3 +24,8 @@ class TaskOut(BaseModel):
         json_encoders = {
             datetime: lambda v: v.isoformat()
         }
+
+class TaskMove(BaseModel):
+    task_id: int
+    to_column_id: int
+    new_position: int

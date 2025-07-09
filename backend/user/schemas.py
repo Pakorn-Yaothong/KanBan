@@ -23,3 +23,7 @@ class UserOut(BaseModel):
         json_encoders = {
             datetime: lambda v: v.isoformat()
         }
+
+class LoginRequest(BaseModel):
+    email: EmailStr
+    password: str

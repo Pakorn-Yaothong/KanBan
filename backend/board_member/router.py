@@ -1,5 +1,6 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
+from typing import Optional
 
 from . import schemas
 from .models import BoardMember
@@ -12,8 +13,11 @@ router = APIRouter(
 )
 
 @router.get("/", response_model=list[schemas.BoardMemberOut])
-def list_board_members(db: Session = Depends(get_db)):
-    return db.query(BoardMember).all()
+def list_board_members(board_id: Optional[int] = Query(None), db: Session = Depends(get_db)):
+    query = db.query(BoardMember)
+    if board_id is not None:
+        query = query.filter(BoardMember.board_id == board_id)
+    return query.all()
 
 @router.post("/", response_model=schemas.BoardMemberOut, status_code=201)
 def add_board_member(data: schemas.BoardMemberCreate, db: Session = Depends(get_db)):

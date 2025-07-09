@@ -2,7 +2,7 @@
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-
+from sqlalchemy.orm import selectinload
 from . import schemas, models
 from database import get_db
 from user.models import User  # <-- นำเข้า User มาตรวจ FK
@@ -16,7 +16,7 @@ def list_boards(db: Session = Depends(get_db)):
     """
     ดึงรายการบอร์ดทั้งหมด
     """
-    return db.query(models.Board).all()
+    return db.query(models.Board).options(selectinload(models.Board.columns)).all()
 
 @router.post("/", response_model=schemas.BoardOut, status_code=201)
 def create_board(data: schemas.BoardCreate, db: Session = Depends(get_db)):
