@@ -4,13 +4,14 @@ import type { DraggableProvided, DroppableProvided } from "react-beautiful-dnd";
 import type { Task } from "../api";
 import { createTask } from "../api";
 import TaskModal from "./TaskModal";
+import "../styles/Column.css";
 
 interface Props {
   column: {
     id: number;
     name: string;
     tasks?: Task[];
-    boardId: number; // เพิ่ม field boardId
+    boardId: number;
   };
 }
 
@@ -49,15 +50,15 @@ export default function Column({ column }: Props) {
   };
 
   return (
-    <div className="bg-gray-200 rounded-lg w-72 p-4 flex-shrink-0 shadow-md">
-      <h3 className="font-bold text-gray-700 mb-3">{column.name}</h3>
+    <div className="column-container">
+      <h3 className="column-title">{column.name}</h3>
 
       <Droppable droppableId={String(column.id)}>
         {(provided: DroppableProvided) => (
           <div
             ref={provided.innerRef}
             {...provided.droppableProps}
-            className="min-h-[50px]"
+            className="task-list"
           >
             {tasks.map((task, idx) => (
               <Draggable key={task.id} draggableId={String(task.id)} index={idx}>
@@ -66,10 +67,10 @@ export default function Column({ column }: Props) {
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
-                    className="bg-white rounded p-3 mb-2 shadow cursor-pointer"
+                    className="task-card"
                     onClick={() => setSelectedTask(task)}
                   >
-                    <div className="font-medium text-gray-800">{task.title}</div>
+                    <div className="task-title">{task.title}</div>
                   </div>
                 )}
               </Draggable>
@@ -80,18 +81,18 @@ export default function Column({ column }: Props) {
       </Droppable>
 
       {isAdding ? (
-        <div className="mt-2">
+        <div className="add-task-container">
           <input
-            className="w-full text-sm p-2 border rounded mb-1 focus:outline-none focus:ring"
+            className="add-task-input"
             placeholder="ชื่อการ์ด..."
             value={newTitle}
             onChange={(e) => setNewTitle(e.target.value)}
             autoFocus
           />
-          <div className="flex gap-2">
+          <div className="add-task-actions">
             <button
               onClick={handleAddTask}
-              className="bg-blue-600 text-white text-sm px-3 py-1 rounded hover:bg-blue-700"
+              className="btn-add-task"
             >
               เพิ่มการ์ด
             </button>
@@ -100,7 +101,7 @@ export default function Column({ column }: Props) {
                 setIsAdding(false);
                 setNewTitle("");
               }}
-              className="text-sm text-gray-600 hover:underline"
+              className="btn-cancel-task"
             >
               ยกเลิก
             </button>
@@ -109,7 +110,7 @@ export default function Column({ column }: Props) {
       ) : (
         <button
           onClick={() => setIsAdding(true)}
-          className="text-sm text-gray-600 hover:underline mt-2"
+          className="btn-show-add"
         >
           + เพิ่มการ์ด
         </button>
@@ -119,7 +120,7 @@ export default function Column({ column }: Props) {
         <TaskModal
           task={selectedTask}
           onClose={() => setSelectedTask(null)}
-          boardId={column.boardId} // ส่ง boardId ไปที่ TaskModal
+          boardId={column.boardId}
         />
       )}
     </div>

@@ -4,6 +4,7 @@ import {
   InboxIcon,
   ViewBoardsIcon,
 } from "@heroicons/react/outline";
+import "../styles/Sidebar.css";
 
 const routes = [
   { name: "Inbox", to: "/inbox", icon: <InboxIcon className="w-6 h-6" /> },
@@ -12,19 +13,17 @@ const routes = [
 
 export default function Sidebar() {
   return (
-    <div className="w-64 bg-sidebar text-white flex flex-col p-4 space-y-4">
+    <div className="sidebar-container">
       {routes.map((r) => (
         <NavLink
           key={r.to}
           to={r.to}
           className={({ isActive }) =>
-            `flex items-center p-2 rounded ${
-              isActive ? "bg-accent" : "hover:bg-gray-700"
-            }`
+            `sidebar-link ${isActive ? "active" : ""}`
           }
         >
           {r.icon}
-          <span className="ml-3">{r.name}</span>
+          <span className="sidebar-label">{r.name}</span>
         </NavLink>
       ))}
     </div>

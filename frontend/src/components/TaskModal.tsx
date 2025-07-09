@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import type { Task } from "../api";
 import { assignUserToTask, fetchBoardMembers } from "../api";
+import "../styles/TaskModal.css";
 
 interface User {
   id: number;
@@ -11,7 +12,7 @@ interface User {
 interface Props {
   task: Task;
   onClose: () => void;
-  boardId: number; // รับ boardId เพื่อดึงสมาชิก
+  boardId: number;
 }
 
 export default function TaskModal({ task, onClose, boardId }: Props) {
@@ -21,7 +22,7 @@ export default function TaskModal({ task, onClose, boardId }: Props) {
 
   useEffect(() => {
     fetchBoardMembers(boardId).then(setMembers);
-    setSelectedUser((task as any).assignee_id ?? null); // แก้ TS error ชั่วคราว
+    setSelectedUser((task as any).assignee_id ?? null);
   }, [boardId, (task as any).assignee_id]);
 
   const handleAssign = async () => {
@@ -39,30 +40,30 @@ export default function TaskModal({ task, onClose, boardId }: Props) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg w-full max-w-lg shadow-lg p-6 relative">
+    <div className="task-modal-overlay">
+      <div className="task-modal">
         <button
           onClick={onClose}
-          className="absolute top-3 right-3 text-gray-500 hover:text-black text-xl"
+          className="task-modal-close"
         >
           ×
         </button>
 
-        <h2 className="text-xl font-semibold mb-3 text-gray-800">
+        <h2 className="task-modal-title">
           📝 {task.title}
         </h2>
 
-        <div className="mb-4">
-          <label className="text-sm text-gray-600 block mb-1">รายละเอียด</label>
-          <div className="bg-gray-100 p-3 rounded text-gray-700 text-sm min-h-[60px]">
+        <div className="task-modal-section">
+          <label className="task-modal-label">รายละเอียด</label>
+          <div className="task-modal-description">
             {task.description || "ยังไม่มีรายละเอียด"}
           </div>
         </div>
 
-        <div className="mb-4">
-          <label className="text-sm text-gray-600 block mb-1">ผู้รับผิดชอบ</label>
+        <div className="task-modal-section">
+          <label className="task-modal-label">ผู้รับผิดชอบ</label>
           <select
-            className="w-full border rounded p-2"
+            className="task-modal-select"
             value={selectedUser ?? ""}
             onChange={(e) => setSelectedUser(Number(e.target.value))}
           >
@@ -75,27 +76,23 @@ export default function TaskModal({ task, onClose, boardId }: Props) {
           </select>
         </div>
 
-        <div className="flex justify-end gap-2">
+        <div className="task-modal-actions">
           <button
             onClick={handleAssign}
             disabled={loading || selectedUser === null}
-            className={`px-4 py-2 rounded text-white ${
-              loading || selectedUser === null
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-blue-600 hover:bg-blue-700"
-            }`}
+            className={`task-modal-save ${loading || selectedUser === null ? "disabled" : ""}`}
           >
             {loading ? "กำลังบันทึก..." : "บันทึก"}
           </button>
           <button
             onClick={onClose}
-            className="px-4 py-2 rounded border border-gray-300 hover:bg-gray-100"
+            className="task-modal-cancel"
           >
             ยกเลิก
           </button>
         </div>
 
-        <div className="text-xs text-gray-500 mt-4">
+        <div className="task-modal-footer">
           สร้างเมื่อ: {task.created_at ? new Date(task.created_at).toLocaleString("th-TH") : "ไม่ทราบเวลา"}
         </div>
       </div>

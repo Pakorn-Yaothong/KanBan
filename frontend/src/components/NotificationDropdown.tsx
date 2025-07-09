@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import api from "../api";
+import "../styles/NotificationDropdown.css";
 
 interface Notification {
   id: number;
@@ -36,34 +37,34 @@ export default function NotificationDropdown() {
   };
 
   return (
-    <div className="relative" ref={ref}>
-      <button onClick={() => setOpen((prev) => !prev)} className="relative hover:text-blue-500">
+    <div className="notification-container" ref={ref}>
+      <button onClick={() => setOpen((prev) => !prev)} className="notification-button">
         🔔
         {notifications.length > 0 && (
-          <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full text-xs px-1">
+          <span className="notification-badge">
             {notifications.length}
           </span>
         )}
       </button>
 
       {open && (
-        <div className="absolute right-0 mt-2 w-80 bg-white shadow-lg rounded-lg border z-50 max-h-96 overflow-y-auto">
+        <div className="notification-dropdown">
           {notifications.length === 0 ? (
-            <div className="p-4 text-gray-500 text-sm text-center">ไม่มีแจ้งเตือน</div>
+            <div className="notification-empty">ไม่มีแจ้งเตือน</div>
           ) : (
             notifications.map((n) => (
-              <div key={n.id} className="p-3 border-b border-gray-200">
-                <div className="text-sm font-semibold">{n.sender} เชิญเข้าร่วมบอร์ด</div>
-                <div className="text-xs text-gray-500">{n.board_name}</div>
-                <div className="mt-2 flex justify-end gap-2">
+              <div key={n.id} className="notification-item">
+                <div className="notification-sender">{n.sender} เชิญเข้าร่วมบอร์ด</div>
+                <div className="notification-board">{n.board_name}</div>
+                <div className="notification-actions">
                   <button
-                    className="px-2 py-1 text-sm bg-green-500 text-white rounded"
+                    className="btn-accept"
                     onClick={() => handleAction(n.id, "accept")}
                   >
                     ตอบรับ
                   </button>
                   <button
-                    className="px-2 py-1 text-sm bg-gray-400 text-white rounded"
+                    className="btn-reject"
                     onClick={() => handleAction(n.id, "reject")}
                   >
                     ปฏิเสธ

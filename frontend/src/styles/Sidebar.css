@@ -1,0 +1,33 @@
+.sidebar-container {
+  width: 16rem;
+  background-color: #172b4d;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  gap: 1rem;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  border-radius: 6px;
+  color: #d1d5db;
+  transition: background-color 0.2s ease;
+  text-decoration: none;
+}
+
+.sidebar-link:hover {
+  background-color: #2c3e50;
+}
+
+.sidebar-link.active {
+  background-color: #0079bf;
+  color: white;
+}
+
+.sidebar-label {
+  margin-left: 0.75rem;
+  font-size: 0.875rem;
+}

@@ -3,10 +3,11 @@ import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import Column from "./Column";
 import type { Column as ColumnType } from "../api";
 import { moveTask, fetchBoards } from "../api";
+import "../styles/BoardView.css";
 
 interface Props {
   columns: ColumnType[];
-  boardId: number; // เพิ่ม prop boardId
+  boardId: number;
 }
 
 export default function BoardView({ columns, boardId }: Props) {
@@ -38,7 +39,6 @@ export default function BoardView({ columns, boardId }: Props) {
         new_position: newPosition,
       });
 
-      // ดึงข้อมูลบอร์ดใหม่เพื่ออัพเดต UI
       const freshBoards = await fetchBoards();
       if (freshBoards.length > 0) {
         setColumnState(freshBoards[0].columns);
@@ -50,11 +50,11 @@ export default function BoardView({ columns, boardId }: Props) {
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
-      <div className="flex gap-4 p-4 overflow-x-auto min-h-[calc(100vh-6rem)]">
+      <div className="board-view-container">
         {columnState.map((col) => (
           <Column
             key={col.id}
-            column={{ ...col, boardId }} // ส่ง boardId ให้ Column
+            column={{ ...col, boardId }}
           />
         ))}
       </div>
